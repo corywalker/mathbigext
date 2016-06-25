@@ -18,7 +18,7 @@ func Pow(b *big.Float, x *big.Float) *big.Float {
 			if xint % 2 == 0 {
 				return Exp(exp)
 			} else {
-				return exp.Mul(Exp(exp, big.NewFloat(-1))
+				return exp.Mul(Exp(exp), big.NewFloat(-1))
 			}
 		}
 	}
