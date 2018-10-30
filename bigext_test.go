@@ -1,10 +1,11 @@
 package mathbigext
 
 import (
-	"testing"
-	"github.com/stretchr/testify/assert"
-	"math/big"
 	"math"
+	"math/big"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestLog(t *testing.T) {
@@ -85,7 +86,7 @@ func TestPow(t *testing.T) {
 	assert.Equal(t, "2.191742975e+1158", res2.String())
 
 	// Test small results
-	res3:= Pow(big.NewFloat(2000.5), big.NewFloat(-500))
+	res3 := Pow(big.NewFloat(2000.5), big.NewFloat(-500))
 	assert.Equal(t, "2.696013996e-1651", res3.String())
 
 	// Test negative bases
@@ -95,4 +96,3 @@ func TestPow(t *testing.T) {
 	assert.Equal(t, "-2", Pow(big.NewFloat(-2), big.NewFloat(1)).String())
 	assert.Equal(t, "4", Pow(big.NewFloat(-2), big.NewFloat(2)).String())
 }
-

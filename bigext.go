@@ -5,6 +5,9 @@ import (
 	"math/big"
 )
 
+var mathE = big.NewFloat(math.E)
+
+// Pow returns the result of b to the power of x.
 func Pow(b *big.Float, x *big.Float) *big.Float {
 	// Needs special cases!
 	if b.Cmp(big.NewFloat(0)) == -1 {
@@ -15,11 +18,10 @@ func Pow(b *big.Float, x *big.Float) *big.Float {
 			exp := Log(absb)
 			exp.Mul(exp, x)
 			xint, _ := x.Int64()
-			if xint % 2 == 0 {
+			if xint%2 == 0 {
 				return Exp(exp)
-			} else {
-				return exp.Mul(Exp(exp), big.NewFloat(-1))
 			}
+			return exp.Mul(Exp(exp), big.NewFloat(-1))
 		}
 	}
 	exp := Log(b)
@@ -27,6 +29,7 @@ func Pow(b *big.Float, x *big.Float) *big.Float {
 	return Exp(exp)
 }
 
+// Exp returns the result of e to the power of x.
 func Exp(x *big.Float) *big.Float {
 	result := big.NewFloat(1)
 	cmpresult := x.Cmp(big.NewFloat(0))
@@ -34,9 +37,10 @@ func Exp(x *big.Float) *big.Float {
 		return result
 	} else if cmpresult == 1 {
 		// Positive x
-		var step int = 0
-		for x.Cmp(big.NewFloat(float64(step+1))) == 1 {
-			result.Mul(result, big.NewFloat(math.E))
+		var step int64
+		xInt, _ := x.Int64()
+		for xInt > step+1 {
+			result.Mul(result, mathE)
 			step = step + 1
 		}
 		xAsFloat, _ := x.Float64()
@@ -45,9 +49,9 @@ func Exp(x *big.Float) *big.Float {
 		return result
 	} else {
 		// Negative x
-		var step int = 0
+		var step int
 		for x.Cmp(big.NewFloat(float64(step-1))) == -1 {
-			result.Quo(result, big.NewFloat(math.E))
+			result.Quo(result, mathE)
 			step = step - 1
 		}
 		xAsFloat, _ := x.Float64()
@@ -57,10 +61,11 @@ func Exp(x *big.Float) *big.Float {
 	}
 }
 
+// Log returns the natural log of x.
 func Log(x *big.Float) *big.Float {
 	mant := big.NewFloat(0)
 	exp := x.MantExp(mant)
 	mant64, _ := mant.Float64()
-	ret := math.Log(mant64) + float64(exp) * math.Ln2
+	ret := math.Log(mant64) + float64(exp)*math.Ln2
 	return big.NewFloat(ret)
 }
